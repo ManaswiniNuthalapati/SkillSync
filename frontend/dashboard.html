@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSync | Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+    body,html { height:100%; background:#f6f9fc; }
+
+    /* Layout */
+    .dashboard-container { display:flex; height:100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px; background:#ffffff; padding:2rem 1rem; box-shadow:2px 0 10px rgba(0,0,0,0.05);
+    }
+    .sidebar h2 { color:#3b82f6; font-size:1.6rem; text-align:center; margin-bottom:2rem; }
+    .sidebar ul { list-style:none; }
+    .sidebar ul li { margin-bottom:1.2rem; }
+    .sidebar ul li a { text-decoration:none; color:#475569; font-weight:500; padding:0.5rem; display:block; border-radius:6px; transition:0.3s; }
+    .sidebar ul li a:hover { background:#eef3ff; color:#3b82f6; }
+
+    /* Main Content */
+    .main-content { flex:1; padding:2rem 3rem; overflow-y:auto; }
+    .main-header h1 { font-size:1.8rem; color:#1e293b; margin-bottom:0.3rem; }
+    .main-header p { color:#64748b; margin-bottom:2rem; }
+
+    /* Section Cards */
+    .section-card { background:#ffffff; padding:2rem; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,0.05); margin-bottom:2rem; }
+
+    /* Circular Progress */
+    .circular-progress { position: relative; width:150px; height:150px; margin:auto; }
+    .circular-progress svg { transform: rotate(-90deg); width:100%; height:100%; }
+    .circular-progress circle { fill:none; stroke-width:12; stroke-linecap:round; }
+    .circular-progress .bg { stroke:#e6e6e6; }
+    .circular-progress .progress { stroke:#3b82f6; stroke-dasharray: 440; stroke-dashoffset: 440; transition: stroke-dashoffset 1.2s ease; }
+    .circular-progress .percentage { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:1.5rem; font-weight:600; color:#1e293b; }
+
+    /* ---------------------------------------------------------------------- */
+    /* Bar Graph (New & Improved Styles integrated here) */
+    /* ---------------------------------------------------------------------- */
+    .bar-graph-container {
+      display: flex;
+      justify-content: center; /* Center the bars */
+      align-items: flex-end;
+      height: 250px; /* Increased height for better visibility */
+      background: #f0f4f8; /* Light background for the graph area */
+      padding: 1.5rem 0;
+      border-radius: 12px;
+      gap: 3rem; /* Increased gap between bars */
+    }
+
+    .bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80px; /* Fixed width for clarity */
+      height: 100%; /* Take full height of container for reference */
+      justify-content: flex-end; /* Align content to the bottom */
+    }
+    
+    .bar-fill {
+      width: 100%;
+      min-height: 5px; /* Minimum height to be visible even for 0% */
+      background: #3b82f6;
+      border-radius: 8px 8px 0 0;
+      height: 0; /* Initial height for animation */
+      transition: height 1s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .bar-label {
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #1e293b;
+        text-align: center;
+    }
+
+    .bar-value {
+        position: absolute;
+        top: -25px; /* Position above the bar */
+        background: #2563eb; 
+        color: white;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      justify-content: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      color: #475569;
+    }
+    .legend-color {
+      width: 15px;
+      height: 15px;
+      border-radius: 4px;
+    }
+
+    /* Responsive */
+    @media(max-width:768px){
+      .dashboard-container{flex-direction:column;}
+      .bar-graph-container{height:180px;}
+      .legend{flex-direction:column; align-items:center;}
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+
+    <aside class="sidebar">
+      <h2>SkillSync</h2>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="resume.html">Resume Analyzer</a></li>
+        <li><a href="interviewprep.html">Interview Prep</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="login.html">Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <h1>Dashboard</h1>
+        <p>Visual Insights of Your Resume Uploads</p>
+      </header>
+
+      <section class="section-card">
+        <h2>Resume Analyzer Score (Avg.)</h2>
+        <div class="circular-progress">
+          <svg>
+            <circle class="bg" cx="75" cy="75" r="70"></circle>
+            <circle class="progress" cx="75" cy="75" r="70"></circle>
+          </svg>
+          <div class="percentage" id="resumeScore">--%</div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Interview Preparation Progress</h2>
+        
+        <div class="bar-graph-container">
+          <div class="bar">
+            <div id="technicalBar" class="bar-fill">
+                <span id="techTooltip" class="bar-value">--%</span> 
+            </div>
+            <span class="bar-label">Technical</span>
+          </div>
+          
+          <div class="bar">
+            <div id="hrBar" class="bar-fill" style="background:#2563eb;">
+                <span id="hrTooltip" class="bar-value">--%</span>
+            </div>
+            <span class="bar-label">HR</span>
+          </div>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item"><div class="legend-color" style="background:#3b82f6"></div>Technical Score</div>
+          <div class="legend-item"><div class="legend-color" style="background:#2563eb"></div>HR Score</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Mock resume/interview data (Used these values from your image/code)
+    const resumeData = {
+      score: 85,
+      technical: 78,
+      hr: 65
+    };
+
+    // 1. Circular progress animation (Resume Score)
+    const progressCircle = document.querySelector('.circular-progress .progress');
+    const resumeScoreElem = document.getElementById('resumeScore');
+    const circumference = 440;
+    
+    // Set static text content immediately
+    resumeScoreElem.textContent = resumeData.score + '%';
+
+    // Calculate offset for animation
+    const offset = circumference - (resumeData.score/100)*circumference;
+    
+    // Apply animation after a small delay
+    setTimeout(()=> { 
+        progressCircle.style.strokeDashoffset = offset; 
+    }, 500);
+
+    // 2. Bar chart animation for Interview Prep
+    const techBar = document.getElementById('technicalBar');
+    const hrBar = document.getElementById('hrBar');
+    const techTooltip = document.getElementById('techTooltip');
+    const hrTooltip = document.getElementById('hrTooltip');
+    
+    // Set bar height and tooltip content after a delay for visual effect
+    setTimeout(()=>{
+      // Set height based on percentage
+      techBar.style.height = resumeData.technical + '%';
+      hrBar.style.height = resumeData.hr + '%';
+      
+      // Set tooltip text
+      techTooltip.textContent = resumeData.technical + '%';
+      hrTooltip.textContent = resumeData.hr + '%';
+    }, 800);
+  </script>
+</body>
+</html>

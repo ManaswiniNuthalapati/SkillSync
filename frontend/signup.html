@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillSync | Sign Up</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif;}
+    body {background: linear-gradient(135deg, #eef3ff, #f9fbfd); display:flex; align-items:center; justify-content:center; height:100vh;}
+
+    .auth-card {width:400px; padding:2.5rem 2rem; background:#fff; border-radius:20px; box-shadow:0 10px 35px rgba(0,0,0,0.08);}
+    .auth-card h2 {font-size:1.8rem; color:#1e293b; margin-bottom:0.5rem; text-align:center;}
+    .subtitle {color:#64748b; font-size:0.95rem; margin-bottom:1.5rem; text-align:center;}
+    .form-group {margin-bottom:1rem;}
+    label {display:block; color:#475569; font-size:0.9rem; margin-bottom:0.3rem;}
+    input {width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:10px; outline:none; background:#f8fafc; font-size:0.95rem; transition:0.3s;}
+    input:focus {border-color:#3b82f6; background:#fff; box-shadow:0 0 6px rgba(59,130,246,0.3);}
+    .btn {width:100%; background:linear-gradient(90deg,#3b82f6,#2563eb); color:white; border:none; padding:0.9rem; border-radius:10px; font-weight:500; font-size:1rem; cursor:pointer; transition:all 0.3s ease; margin-top:0.5rem;}
+    .btn:hover {background:linear-gradient(90deg,#2563eb,#1d4ed8); transform:translateY(-2px);}
+    .switch-text {text-align:center; margin-top:1.2rem; color:#475569;}
+    .switch-text a {color:#3b82f6; text-decoration:none; font-weight:500;}
+    .switch-text a:hover {text-decoration:underline;}
+
+    @media (max-width:480px) { .auth-card {width:90%; padding:2rem;} }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <p class="subtitle">Get started with your SkillSync journey </p>
+    <form action="login.html" method="get">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Enter your name" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Create a password" required>
+      </div>
+      <button type="submit" class="btn">Sign Up</button>
+      <p class="switch-text">Already have an account? <a href="login.html">Login here</a></p>
+    </form>
+  </div>
+</body>
+</html>
