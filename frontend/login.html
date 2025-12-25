@@ -1,46 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkillSync | Login</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-    * {margin:0; padding:0; box-sizing:border-box; font-family:'Inter', sans-serif;}
-    body {background: linear-gradient(135deg, #eef3ff, #f9fbfd); display:flex; align-items:center; justify-content:center; height:100vh;}
-
-    .auth-card {width:400px; padding:2.5rem 2rem; background:#fff; border-radius:20px; box-shadow:0 10px 35px rgba(0,0,0,0.08);}
-    .auth-card h2 {font-size:1.8rem; color:#1e293b; margin-bottom:0.5rem; text-align:center;}
-    .subtitle {color:#64748b; font-size:0.95rem; margin-bottom:1.5rem; text-align:center;}
-    .form-group {margin-bottom:1rem;}
-    label {display:block; color:#475569; font-size:0.9rem; margin-bottom:0.3rem;}
-    input {width:100%; padding:0.75rem; border:1px solid #cbd5e1; border-radius:10px; outline:none; background:#f8fafc; font-size:0.95rem; transition:0.3s;}
-    input:focus {border-color:#3b82f6; background:#fff; box-shadow:0 0 6px rgba(59,130,246,0.3);}
-    .btn {width:100%; background:linear-gradient(90deg,#3b82f6,#2563eb); color:white; border:none; padding:0.9rem; border-radius:10px; font-weight:500; font-size:1rem; cursor:pointer; transition:all 0.3s ease; margin-top:0.5rem;}
-    .btn:hover {background:linear-gradient(90deg,#2563eb,#1d4ed8); transform:translateY(-2px);}
-    .switch-text {text-align:center; margin-top:1.2rem; color:#475569;}
-    .switch-text a {color:#3b82f6; text-decoration:none; font-weight:500;}
-    .switch-text a:hover {text-decoration:underline;}
-
-    @media (max-width:480px) { .auth-card {width:90%; padding:2rem;} }
-  </style>
+<meta charset="UTF-8">
+<title>SkillSync | Login</title>
+<link rel="stylesheet" href="./output.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-  <div class="auth-card">
-    <h2>Login</h2>
-    <p class="subtitle">Sign in to continue to SkillSync </p>
-    <form action="dashboard.html" method="get">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" placeholder="Enter your email" required>
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" placeholder="Enter your password" required>
-      </div>
-      <button type="submit" class="btn">Login</button>
-      <p class="switch-text">Don't have an account? <a href="sign-up.html">Sign up here</a></p>
-    </form>
-  </div>
+
+<body class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+
+<div class="w-[420px] p-8 rounded-2xl bg-white dark:bg-gray-800 shadow-2xl">
+
+<h1 class="text-3xl font-semibold text-gray-900 dark:text-white text-center">
+Welcome Back 👋
+</h1>
+
+<p class="text-gray-500 dark:text-gray-400 text-center mt-2 mb-6">
+Login to continue your SkillSync journey
+</p>
+
+<input id="email" class="w-full mb-3 p-3 rounded-lg bg-gray-100 dark:bg-gray-700 dark:text-white"
+placeholder="Email Address" type="email">
+
+<input id="password" class="w-full mb-4 p-3 rounded-lg bg-gray-100 dark:bg-gray-700 dark:text-white"
+placeholder="Password" type="password">
+
+<button id="loginBtn"
+class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg">
+Login
+</button>
+
+<p class="text-center text-gray-500 dark:text-gray-400 mt-4">
+Don’t have an account?
+<a href="./signup.html" class="text-indigo-500">Create one</a>
+</p>
+
+</div>
+
+<script>
+if(localStorage.getItem("theme")==="dark"){document.documentElement.classList.add("dark")}
+</script>
+
+<script type="module">
+import { auth } from "./firebase.js";
+import { signInWithEmailAndPassword }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const email=document.getElementById("email");
+const password=document.getElementById("password");
+const btn=document.getElementById("loginBtn");
+
+btn.addEventListener("click", async(e)=>{
+ e.preventDefault();
+ try{
+  await signInWithEmailAndPassword(auth,email.value,password.value);
+  alert("Login Successful 🎯");
+  window.location.href="./dashboard.html";
+ }catch(err){
+  alert(err.message);
+ }
+});
+</script>
+
 </body>
 </html>

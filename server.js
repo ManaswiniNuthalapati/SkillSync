@@ -1,75 +1,143 @@
-const express = require("express");
-const multer = require("multer");
-const pdfParse = require("pdf-parse");
-const cors = require("cors");
-const path = require("path");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import Groq from "groq-sdk";
+
+dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(express.json());
 
-// Serve frontend files
-app.use(express.static(path.join(__dirname, "frontend")));
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,POST",
+  })
+);
 
-// Multer setup
-const upload = multer({ storage: multer.memoryStorage() });
-
-// Skills database
-const skillKeywords = [
-  "python","java","sql","html","css","javascript",
-  "react","node","machine learning","data analysis"
-];
-
-// Mock job list
-const jobList = [
-  { title:"Frontend Developer", company:"Tech Corp", location:"Hyderabad", skills:["html","css","javascript"] },
-  { title:"Backend Developer", company:"Code Labs", location:"Bangalore", skills:["node","sql","python"] },
-  { title:"Data Analyst", company:"Data Solutions", location:"Mumbai", skills:["python","data analysis","sql"] },
-  { title:"AI Engineer", company:"AI Innovations", location:"Chennai", skills:["machine learning","python"] }
-];
-
-// Root
-app.get("/", (req,res)=>{
-  res.send("SkillSync Backend Running! Use /resume.html for frontend.");
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-// Analyze resume
-app.post("/analyze-resume", upload.single("resume"), async (req,res)=>{
+app.get("/", (req, res) => {
+  res.send("SkillSync Interview AI Running");
+});
+
+// ================== INTERVIEW AI ==================
+app.post("/generate-interview", async (req, res) => {
   try {
-    if(!req.file) return res.status(400).json({error:"No file uploaded"});
+    const { role, resume } = req.body;
 
-    const data = await pdfParse(req.file.buffer);
-    const text = data.text.toLowerCase();
+    const prompt = `
+You are an AI interview generator for SkillSync.
 
-    // Skills
-    const foundSkills = skillKeywords.filter(k => text.includes(k));
-    const missingSkills = skillKeywords.filter(k => !text.includes(k));
+ROLE: ${role}
+RESUME: ${resume || "None"}
 
-    // Score
-    const score = Math.min(foundSkills.length * 10, 100);
+Previously asked questions (DO NOT repeat any of these):
+${(req.body.previousQuestions || []).join("\n")}
 
-    // Highlights
-    const highlights = foundSkills.slice(0,3);
+STRICT RULES:
+• ONLY generate questions for the exact role: ${role}
+• DO NOT switch domain
+• Use resume only to adjust difficulty
+• NEVER repeat any question from the previous list
 
-    // Jobs
-    const jobs = jobList.map(job=>{
-      const matched = job.skills.filter(s => foundSkills.includes(s));
-      const fit = Math.round((matched.length / job.skills.length) * 100);
-      return {...job, fit};
-    }).filter(j=>j.fit>0).sort((a,b)=>b.fit - a.fit);
+RETURN ONLY PURE JSON:
 
-    res.json({
-      score,
-      highlights,
-      foundSkills,
-      missingSkills,
-      jobs
+{
+ "technical":[
+   {"question":"","difficulty":"Easy/Medium/Hard","answer":""}
+ ],
+ "nonTechnical":[
+   {"question":"","difficulty":"Easy/Medium/Hard","answer":""}
+ ]
+}
+
+REQUIREMENTS:
+• 5 Technical Questions (STRICTLY ${role})
+• 5 Non-Technical Questions
+• Each question must be NEW and UNIQUE
+• Answers MUST be detailed
+• JSON MUST BE VALID
+`;
+
+
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      temperature: 0.2,
+      messages: [
+        { role: "system", content: "Return valid JSON only." },
+        { role: "user", content: prompt },
+      ],
     });
 
-  } catch(err){
-    console.error(err);
-    res.status(500).json({error:"Error analyzing resume"});
+    let text = completion.choices[0].message.content || "";
+
+    text = text.replace(/```json/g, "")
+               .replace(/```/g, "")
+               .trim();
+
+    let parsed;
+
+    // ---- SAFE JSON PARSER ----
+    try {
+      parsed = JSON.parse(text);
+    } catch (err) {
+      console.log("BROKEN AI JSON FIXING...");
+      text = text
+        .replace(/,\s*}/g, "}")
+        .replace(/,\s*]/g, "]")
+        .replace(/\n/g, " ");
+
+      parsed = JSON.parse(text);
+    }
+
+    return res.json({
+      success: true,
+      data: parsed,
+    });
+
+  } catch (err) {
+    console.log("SERVER ERROR:", err.message);
+
+    // ---------- FINAL GUARANTEED FALLBACK ----------
+    return res.json({
+      success: true,
+      data: {
+        technical: [
+          {
+            question: `Explain your understanding of the role ${req.body.role}?`,
+            difficulty: "Medium",
+            answer:
+              "Explain responsibilities, tools used, workflows, business impact, challenges handled, and measurable outcomes.",
+          },
+          {
+            question: "Explain one major project relevant to this role.",
+            difficulty: "Medium",
+            answer:
+              "Discuss problem, approach, tools, challenges, optimizations, performance, and results.",
+          },
+        ],
+        nonTechnical: [
+          {
+            question: "Tell me about yourself.",
+            difficulty: "Easy",
+            answer:
+              "Introduce background, achievements, passion for domain, relevant strengths, and conclude with why this role.",
+          },
+          {
+            question: "Why should we hire you?",
+            difficulty: "Medium",
+            answer:
+              "Show fit to role, value to company, mindset, capability, fast learning, teamwork, dedication.",
+          },
+        ],
+      },
+    });
   }
 });
 
-// Start server
-app.listen(8000, ()=>console.log("✅ Resume Analyzer running at http://127.0.0.1:8000"));
+app.listen(5000, () =>
+  console.log("Groq Server Running on Port 5000")
+);

@@ -1,209 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkillSync | Interview Prep</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-    body, html{height:100%;background:#f6f9fc;}
-    .container{display:flex; min-height:100vh;}
-    .sidebar{width:220px;background:#fff;padding:2rem 1rem;box-shadow:2px 0 10px rgba(0,0,0,0.05);}
-    .sidebar h2{color:#3b82f6;font-size:1.6rem;text-align:center;margin-bottom:2rem;}
-    .sidebar ul{list-style:none;}
-    .sidebar ul li{margin-bottom:1.2rem;}
-    .sidebar ul li a{text-decoration:none;color:#475569;font-weight:500;padding:0.5rem;display:block;border-radius:6px;transition:0.3s;}
-    .sidebar ul li a:hover{background:#eef3ff;color:#3b82f6;}
-    .main-content{flex:1;padding:2rem 3rem;overflow-y:auto;}
-    .main-header h1{font-size:1.8rem;color:#1e293b;margin-bottom:0.3rem;}
-    .main-header p{color:#64748b;margin-bottom:2rem;}
-    .upload-card, .card{background:#fff;padding:2rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.05);margin-bottom:2rem;}
-    .upload-card input[type="file"]{display:none;}
-    .upload-card label, select, button{display:inline-block;padding:0.8rem 1.5rem;background:#3b82f6;color:white;border-radius:8px;cursor:pointer;transition:0.3s;margin-right:1rem;}
-    .upload-card label:hover, button:hover{background:#2563eb;}
-    select{color:#1e293b;background:#eef3ff;border:none;outline:none;}
-    h2{margin-bottom:1rem;color:#1e293b;}
-    ul{list-style:disc inside; margin-bottom:0.5rem;}
-    li{margin-bottom:0.5rem;color:#475569;font-weight:500;}
-    .more-btn{margin-top:0.5rem;padding:0.5rem 1rem;font-size:0.9rem;}
-    
-    /* Sample Answer Styles */
-    .question-card{margin-bottom:1rem;background:#fefefe;padding:1rem;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.05);}
-    .question-card p.question{font-weight:600;color:#1e293b;margin-bottom:0.5rem;}
-    .show-answer-btn{background:#3b82f6;color:white;border:none;padding:0.4rem 1rem;border-radius:8px;cursor:pointer;font-weight:500;transition:0.3s;margin-bottom:0.5rem;}
-    .show-answer-btn:hover{background:#2563eb;}
-    .answer{display:none;margin-top:0.5rem;padding:0.7rem;background:#f0f4f8;border-left:4px solid #3b82f6;border-radius:6px;color:#475569;font-size:0.95rem;}
-  </style>
+<meta charset="UTF-8">
+<title>SkillSync | Interview Prep</title>
+<link rel="stylesheet" href="./output.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-  <div class="container">
-    <aside class="sidebar">
-      <h2>SkillSync</h2>
-      <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="resume.html">Resume Analyzer</a></li>
-        <li><a href="interviewprep.html">Interview Prep</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="login.html">Logout</a></li>
-      </ul>
-    </aside>
 
-    <main class="main-content">
-      <header class="main-header">
-        <h1>Interview Preparation</h1>
-        <p>Upload your resume and choose a target job to get interview questions</p>
-      </header>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-center">
 
-      <div class="upload-card">
-        <input type="file" id="resumeFile" accept=".pdf">
-        <label for="resumeFile">Upload Resume</label>
-        <select id="jobRole">
-          <option value="">Select Job Role</option>
-          <option value="Frontend Developer">Frontend Developer</option>
-          <option value="Data Analyst">Data Analyst</option>
-          <option value="Machine Learning Intern">Machine Learning Intern</option>
-        </select>
-        <button id="generateBtn">Generate Questions</button>
-      </div>
+<div class="w-[700px] bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl">
 
-      <section class="card">
-        <h2>Technical Questions</h2>
-        <div id="techQuestions">
-          <p>Upload resume and select job role to see questions...</p>
-        </div>
-        <button id="moreTech" class="more-btn">More Questions</button>
-      </section>
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-4">
+🎯 AI Interview Prep Assistant
+</h1>
 
-      <section class="card">
-        <h2>HR / Non-Technical Questions</h2>
-        <div id="hrQuestions">
-          <p>Upload resume and select job role to see questions...</p>
-        </div>
-        <button id="moreHR" class="more-btn">More Questions</button>
-      </section>
-    </main>
-  </div>
+<p class="text-center text-gray-500 dark:text-gray-400 mb-6">
+Get unlimited technical + non-technical interview questions based on your resume & role
+</p>
 
-  <script>
-    const resumeInput = document.getElementById('resumeFile');
-    const jobRoleSelect = document.getElementById('jobRole');
-    const generateBtn = document.getElementById('generateBtn');
-    const techQuestions = document.getElementById('techQuestions');
-    const hrQuestions = document.getElementById('hrQuestions');
-    const moreTech = document.getElementById('moreTech');
-    const moreHR = document.getElementById('moreHR');
+<label class="text-gray-700 dark:text-gray-300 font-semibold">Select Role</label>
+<select id="roleSelect"
+class="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white mb-3">
+<option value="">-- Select Role --</option>
+<option value="software developer">Software Developer</option>
+<option value="data scientist">Data Scientist</option>
+<option value="ai engineer">AI / ML Engineer</option>
+<option value="frontend developer">Frontend Developer</option>
+<option value="backend developer">Backend Developer</option>
+<option value="full stack developer">Full Stack Developer</option>
+<option value="business analyst">Business Analyst</option>
+<option value="cloud engineer">Cloud Engineer</option>
+<option value="devops engineer">DevOps Engineer</option>
+<option value="custom">Custom Role</option>
+</select>
 
-    const questionBank = {
-      "Frontend Developer": {
-        tech: [
-          {q:"Explain the difference between let, var, and const in JavaScript.", a:"let is block scoped, var is function scoped, const is a constant that cannot be reassigned."},
-          {q:"How does CSS Flexbox work?", a:"Flexbox is a layout model that arranges items in rows or columns, providing alignment, spacing, and ordering."},
-          {q:"What is the virtual DOM in React?", a:"The virtual DOM is a lightweight copy of the real DOM that allows React to update only parts of the page efficiently."},
-          {q:"What are event listeners in JavaScript?", a:"Event listeners are functions that wait for and respond to user actions like clicks or inputs."},
-          {q:"Explain CSS Grid layout.", a:"CSS Grid allows creating complex two-dimensional layouts using rows and columns."}
-        ],
-        hr: [
-          {q:"Tell me about yourself.", a:"I am a Data Science graduate with experience in Python, AI projects, and web development."},
-          {q:"How do you handle tight deadlines?", a:"I prioritize tasks, stay organized, and communicate effectively with my team."},
-          {q:"Why do you want to work as a Frontend Developer?", a:"I enjoy building user-friendly and interactive web applications."},
-          {q:"Describe a challenging project you completed.", a:"I worked on a recommendation system project processing large datasets efficiently."},
-          {q:"How do you handle feedback?", a:"I take feedback positively, learn from it, and improve my work continuously."}
-        ]
-      },
-      "Data Analyst": {
-        tech: [
-          {q:"Explain the difference between INNER JOIN and LEFT JOIN in SQL.", a:"INNER JOIN returns only matching records; LEFT JOIN returns all records from the left table and matched records from the right table."},
-          {q:"How would you handle missing data in a dataset?", a:"I can use techniques like imputation, deletion, or analysis based on the dataset."},
-          {q:"What is the purpose of data normalization?", a:"Normalization reduces redundancy and ensures data consistency."},
-          {q:"Explain the difference between structured and unstructured data.", a:"Structured data is organized in tables; unstructured data includes text, images, videos, etc."},
-          {q:"What is a pivot table and how do you use it?", a:"Pivot tables summarize and analyze data easily, allowing filtering, grouping, and aggregation."}
-        ],
-        hr: [
-          {q:"Describe a time you solved a complex problem.", a:"I analyzed the problem systematically and implemented an effective solution."},
-          {q:"Why did you choose a career in data analysis?", a:"I enjoy extracting insights from data to drive decisions."},
-          {q:"How do you prioritize tasks?", a:"I focus on urgent and important tasks, planning my workflow efficiently."},
-          {q:"Describe a time you worked with a team.", a:"I collaborated with team members to complete a project successfully."},
-          {q:"How do you handle stress at work?", a:"I stay calm, organize my work, and tackle tasks step by step."}
-        ]
-      },
-      "Machine Learning Intern": {
-        tech: [
-          {q:"Explain supervised vs unsupervised learning.", a:"Supervised learning uses labeled data; unsupervised learning finds patterns in unlabeled data."},
-          {q:"What is overfitting and how can you prevent it?", a:"Overfitting occurs when a model learns noise; prevent it using regularization, pruning, or more data."},
-          {q:"Describe a project where you used machine learning.", a:"I built a model to predict customer behavior using regression and classification techniques."},
-          {q:"What are common ML algorithms?", a:"Common algorithms include Linear Regression, Decision Trees, SVM, and Neural Networks."},
-          {q:"Explain feature engineering.", a:"Feature engineering is creating input features that improve model performance."}
-        ],
-        hr: [
-          {q:"How do you handle feedback?", a:"I consider feedback carefully and implement improvements."},
-          {q:"Why do you want to pursue Machine Learning?", a:"I am passionate about applying ML to solve real-world problems."},
-          {q:"Describe a situation where you worked in a team.", a:"I contributed effectively in a collaborative environment to achieve goals."},
-          {q:"What motivates you?", a:"I am motivated by problem-solving and learning new technologies."},
-          {q:"Where do you see yourself in 5 years?", a:"I aim to become an expert in ML and contribute to impactful projects."}
-        ]
-      }
-    };
+<input id="customRole"
+placeholder="Enter custom role"
+class="hidden w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white mb-3">
 
-    let currentRole = "";
+<label class="text-gray-700 dark:text-gray-300 font-semibold">
+Paste Resume Text (Optional)
+</label>
 
-    function displayQuestions(qArray, container){
-      container.innerHTML = '';
-      qArray.forEach(item=>{
-        const card = document.createElement('div');
-        card.className = 'question-card';
-        const questionP = document.createElement('p');
-        questionP.className = 'question';
-        questionP.textContent = item.q;
-        const btn = document.createElement('button');
-        btn.className = 'show-answer-btn';
-        btn.textContent = 'Show Sample Answer';
-        const answerP = document.createElement('p');
-        answerP.className = 'answer';
-        answerP.textContent = item.a;
+<textarea id="resumeBox"
+placeholder="Paste resume text..."
+class="w-full h-32 p-3 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white mb-4"></textarea>
 
-        btn.addEventListener('click', ()=>{
-          answerP.style.display = answerP.style.display==='none' ? 'block':'none';
-          btn.textContent = answerP.style.display==='none' ? 'Show Sample Answer':'Hide Answer';
-        });
+<button id="generateBtn"
+class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg mb-4">
+Generate Questions
+</button>
 
-        card.appendChild(questionP);
-        card.appendChild(btn);
-        card.appendChild(answerP);
-        container.appendChild(card);
-      });
-    }
+<h2 class="text-xl text-gray-900 dark:text-white font-semibold">
+Interview Questions:
+</h2>
 
-    function generateQuestions(role){
-      currentRole = role;
-      const techQ = [...questionBank[role].tech].sort(()=>Math.random()-0.5).slice(0,3);
-      const hrQ = [...questionBank[role].hr].sort(()=>Math.random()-0.5).slice(0,3);
+<div id="questionsBox"
+class="mt-4 space-y-4 text-gray-900 dark:text-white">
+No questions generated yet...
+</div>
 
-      displayQuestions(techQ, techQuestions);
-      displayQuestions(hrQ, hrQuestions);
-    }
+<button id="moreBtn"
+class="hidden w-full mt-4 bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg">
+Load More Questions
+</button>
 
-    generateBtn.addEventListener('click', ()=>{
-      const file = resumeInput.files[0];
-      const role = jobRoleSelect.value;
-      if(!file || !role){
-        alert("Please upload a resume and select a job role.");
-        return;
-      }
-      generateQuestions(role);
-    });
+</div>
 
-    moreTech.addEventListener('click', ()=>{
-      if(!currentRole) return;
-      const techQ = [...questionBank[currentRole].tech].sort(()=>Math.random()-0.5).slice(0,3);
-      displayQuestions(techQ, techQuestions);
-    });
+<script>
+const roleSelect = document.getElementById("roleSelect");
+const customRole = document.getElementById("customRole");
+const questionsBox = document.getElementById("questionsBox");
+const moreBtn = document.getElementById("moreBtn");
 
-    moreHR.addEventListener('click', ()=>{
-      if(!currentRole) return;
-      const hrQ = [...questionBank[currentRole].hr].sort(()=>Math.random()-0.5).slice(0,3);
-      displayQuestions(hrQ, hrQuestions);
-    });
-  </script>
+let resumeText = "";
+let askedQuestions = new Set();
+
+roleSelect.addEventListener("change", ()=>{
+ if(roleSelect.value === "custom") customRole.classList.remove("hidden");
+ else customRole.classList.add("hidden");
+});
+
+function toggleAnswer(id){
+ document.getElementById(id).classList.toggle("hidden");
+}
+
+function render(list){
+ questionsBox.innerHTML = "";
+
+ list.forEach((q)=>{
+  if(askedQuestions.has(q.question)) return;
+  askedQuestions.add(q.question);
+
+  const div = document.createElement("div");
+  div.className = "p-4 rounded-lg bg-gray-100 dark:bg-gray-700";
+
+  const id = "ans" + askedQuestions.size;
+
+  div.innerHTML = `
+  <p class="font-semibold">${askedQuestions.size}. ${q.question}</p>
+  <p class="text-sm mt-1">
+   Difficulty:
+   <span class="text-indigo-400 font-semibold">${q.difficulty}</span> |
+   Type:
+   <span class="text-green-400 font-semibold">${q.type}</span>
+  </p>
+
+  <button onclick="toggleAnswer('${id}')"
+  class="mt-2 px-3 py-1 bg-blue-500 text-white rounded-lg">
+  Show Answer
+  </button>
+
+  <p id="${id}" class="hidden mt-2 text-yellow-300">
+   ${q.answer}
+  </p>
+  `;
+
+  questionsBox.appendChild(div);
+ });
+}
+
+async function getQuestions(){
+ let role = roleSelect.value;
+ if(role === "custom") role = customRole.value;
+
+ if(!role){
+  alert("Select role or enter custom role");
+  return;
+ }
+
+ resumeText = document.getElementById("resumeBox").value;
+
+ const res = await fetch("http://localhost:5000/generate-interview", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    role: role,
+    resume: resumeText,
+    previousQuestions: Array.from(askedQuestions)
+  })
+});
+
+ const result = await res.json();
+
+ if(!result.success){
+  alert("Server Error");
+  return;
+ }
+
+ const tech = result.data.technical.map(q=>({...q,type:"Technical"}));
+ const non = result.data.nonTechnical.map(q=>({...q,type:"Non Technical"}));
+
+ render([...tech, ...non]);
+ moreBtn.classList.remove("hidden");
+}
+
+document.getElementById("generateBtn").addEventListener("click",()=>{
+ askedQuestions.clear();
+ getQuestions();
+});
+
+moreBtn.addEventListener("click",()=> getQuestions());
+</script>
+
 </body>
 </html>

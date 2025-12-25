@@ -2,209 +2,133 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkillSync | Profile</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body, html{height:100%;background:#f6f9fc;}
-.container{display:flex;min-height:100vh;}
-.sidebar{width:220px;background:#fff;padding:2rem 1rem;box-shadow:2px 0 10px rgba(0,0,0,0.05);}
-.sidebar h2{color:#3b82f6;font-size:1.6rem;text-align:center;margin-bottom:2rem;}
-.sidebar ul{list-style:none;}
-.sidebar ul li{margin-bottom:1.2rem;}
-.sidebar ul li a{text-decoration:none;color:#475569;font-weight:500;padding:0.5rem;display:block;border-radius:6px;transition:0.3s;}
-.sidebar ul li a:hover{background:#eef3ff;color:#3b82f6;}
-
-.main-content{flex:1;padding:2rem 3rem;overflow-y:auto;}
-.main-header h1{font-size:1.8rem;color:#1e293b;margin-bottom:0.3rem;}
-.main-header p{color:#64748b;margin-bottom:2rem;}
-.card{background:#fff;padding:2rem;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.05);margin-bottom:2rem;}
-
-label{display:block;color:#475569;font-weight:500;margin-bottom:0.3rem;}
-input, select, textarea{width:100%;padding:0.6rem;border:1px solid #cbd5e1;border-radius:8px;margin-bottom:1rem;outline:none;background:#f8fafc;}
-input:focus, select:focus, textarea:focus{border-color:#3b82f6;background:#fff;box-shadow:0 0 5px rgba(59,130,246,0.3);}
-button{padding:0.7rem 1.5rem;background:#3b82f6;color:#fff;border:none;border-radius:8px;cursor:pointer;transition:0.3s;margin-right:1rem;}
-button:hover{background:#2563eb;}
-.skills-container, .experience-container, .education-container{margin-bottom:1rem;}
-.skill-tag{display:inline-block;background:#eef3ff;color:#3b82f6;padding:0.3rem 0.6rem;border-radius:6px;margin:0.2rem;cursor:pointer;}
-.skill-tag:hover{background:#dbeafe;}
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
-.section-header h2{margin:0;font-size:1.2rem;color:#1e293b;}
-.section-header button{padding:0.3rem 0.7rem;font-size:0.9rem;}
-.profile-pic-container{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
-.profile-pic-container img{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #3b82f6;}
-.more-btn{margin-top:0.5rem;padding:0.5rem 1rem;font-size:0.9rem;}
-.success-msg{color:green;margin-top:0.5rem;font-weight:500;}
-</style>
+<link rel="stylesheet" href="./output.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-<div class="container">
 
-  <aside class="sidebar">
-    <h2>SkillSync</h2>
-    <ul>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="resume.html">Resume Analyzer</a></li>
-      <li><a href="interviewprep.html">Interview Prep</a></li>
-      <li><a href="profile.html">Profile</a></li>
-      <li><a href="login.html">Logout</a></li>
-    </ul>
-  </aside>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex justify-center items-center">
 
-  <main class="main-content">
-    <header class="main-header">
-      <h1>My Profile</h1>
-      <p>Update your information to keep your profile complete</p>
-    </header>
+<div class="w-[650px] bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl">
 
-    <div class="card">
-      <div class="profile-pic-container">
-        <img id="profilePic" src="https://via.placeholder.com/80" alt="Profile Picture">
-        <input type="file" id="picInput" accept="image/*">
-        <button onclick="document.getElementById('picInput').click()">Upload Photo</button>
-      </div>
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-4">
+👤 Profile Settings
+</h1>
 
-      <label>Full Name</label>
-      <input type="text" id="fullName" placeholder="Enter your name">
+<p class="text-center text-gray-500 dark:text-gray-400 mb-6">
+View & update your SkillSync account details
+</p>
 
-      <label>Email</label>
-      <input type="email" id="email" placeholder="Enter your email">
+<!-- PROFILE CARD -->
+<div class="space-y-4">
 
-      <label>Phone</label>
-      <input type="text" id="phone" placeholder="Enter phone number">
-
-      <div class="skills-container">
-        <div class="section-header">
-          <h2>Skills</h2>
-          <button onclick="addSkill()">Add Skill</button>
-        </div>
-        <div id="skillsList"></div>
-      </div>
-
-      <label>Resume</label>
-      <input type="file" id="resumeInput" accept=".pdf">
-      <div id="resumeName"></div>
-
-      <div class="experience-container">
-        <div class="section-header">
-          <h2>Experience</h2>
-          <button onclick="addExperience()">Add</button>
-        </div>
-        <div id="experienceList"></div>
-      </div>
-
-      <div class="education-container">
-        <div class="section-header">
-          <h2>Education</h2>
-          <button onclick="addEducation()">Add</button>
-        </div>
-        <div id="educationList"></div>
-      </div>
-
-      <button onclick="saveProfile()">Save Changes</button>
-      <button onclick="cancelProfile()">Cancel</button>
-      <div class="success-msg" id="successMsg"></div>
-    </div>
-  </main>
+<!-- EMAIL (READ ONLY) -->
+<div>
+<label class="text-gray-700 dark:text-gray-300 font-semibold">
+Email (Not Editable)
+</label>
+<input id="emailBox"
+class="w-full p-3 rounded-lg bg-gray-300 dark:bg-gray-700 dark:text-white"
+disabled />
 </div>
 
-<script>
-let skills = [];
-let experiences = [];
-let education = [];
+<!-- USERNAME -->
+<div>
+<label class="text-gray-700 dark:text-gray-300 font-semibold">
+Full Name
+</label>
+<input id="nameBox"
+placeholder="Enter your name..."
+class="w-full p-3 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white" />
+</div>
 
-document.getElementById('picInput').addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(file){
-    document.getElementById('profilePic').src = URL.createObjectURL(file);
-  }
+<!-- HEADLINE -->
+<div>
+<label class="text-gray-700 dark:text-gray-300 font-semibold">
+Headline / About (Ex: Aspiring AI Engineer, Python Developer…)
+</label>
+<textarea id="headlineBox"
+placeholder="Write something about yourself..."
+class="w-full h-24 p-3 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white"></textarea>
+</div>
+
+<button id="saveBtn"
+class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-lg mt-4">
+Save Profile
+</button>
+
+<button id="backBtn"
+class="w-full bg-gray-400 hover:bg-gray-500 text-white p-3 rounded-lg mt-2">
+⬅ Back to Dashboard
+</button>
+
+</div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { doc, getDoc, setDoc }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const emailBox = document.getElementById("emailBox");
+const nameBox  = document.getElementById("nameBox");
+const headlineBox = document.getElementById("headlineBox");
+const saveBtn = document.getElementById("saveBtn");
+const backBtn = document.getElementById("backBtn");
+
+let currentUserId = null;
+
+// Load Profile
+onAuthStateChanged(auth, async(user)=>{
+ if(!user){
+   alert("Login First");
+   window.location.href="login.html";
+   return;
+ }
+
+ currentUserId = user.uid;
+ emailBox.value = user.email;
+
+ const ref = doc(db,"users",user.uid);
+ const snap = await getDoc(ref);
+
+ if(snap.exists()){
+   const data = snap.data();
+   nameBox.value = data.name || "";
+   headlineBox.value = data.headline || "";
+ }
 });
 
-document.getElementById('resumeInput').addEventListener('change', e=>{
-  const file = e.target.files[0];
-  if(file){
-    document.getElementById('resumeName').textContent = file.name;
-  }
+
+// Save Profile
+saveBtn.addEventListener("click", async()=>{
+
+ if(nameBox.value.trim() === ""){
+  alert("Name cannot be empty");
+  return;
+ }
+
+ await setDoc(doc(db,"users",currentUserId),{
+  email: emailBox.value,
+  name: nameBox.value,
+  headline: headlineBox.value
+ }, { merge:true });
+
+ alert("Profile Updated Successfully ✅");
 });
 
-function addSkill(){
-  const skill = prompt("Enter Skill:");
-  if(skill && !skills.includes(skill)){
-    skills.push(skill);
-    renderSkills();
-  }
+
+// Back to Dashboard
+backBtn.onclick = ()=>{
+ window.location.href="dashboard.html";
 }
 
-function renderSkills(){
-  const skillsDiv = document.getElementById('skillsList');
-  skillsDiv.innerHTML = '';
-  skills.forEach((skill,i)=>{
-    const span = document.createElement('span');
-    span.className='skill-tag';
-    span.textContent=skill;
-    span.onclick=()=>{skills.splice(i,1); renderSkills();}
-    skillsDiv.appendChild(span);
-  });
-}
-
-function addExperience(){
-  const company = prompt("Company Name:");
-  const role = prompt("Role:");
-  const duration = prompt("Duration:");
-  if(company && role && duration){
-    experiences.push({company, role, duration});
-    renderExperience();
-  }
-}
-
-function renderExperience(){
-  const expDiv = document.getElementById('experienceList');
-  expDiv.innerHTML='';
-  experiences.forEach((exp,i)=>{
-    const div = document.createElement('div');
-    div.style.marginBottom='0.5rem';
-    div.textContent=`${exp.role} at ${exp.company} (${exp.duration})`;
-    expDiv.appendChild(div);
-  });
-}
-
-function addEducation(){
-  const degree = prompt("Degree:");
-  const university = prompt("University:");
-  const year = prompt("Year:");
-  if(degree && university && year){
-    education.push({degree, university, year});
-    renderEducation();
-  }
-}
-
-function renderEducation(){
-  const eduDiv = document.getElementById('educationList');
-  eduDiv.innerHTML='';
-  education.forEach((edu,i)=>{
-    const div = document.createElement('div');
-    div.style.marginBottom='0.5rem';
-    div.textContent=`${edu.degree}, ${edu.university} (${edu.year})`;
-    eduDiv.appendChild(div);
-  });
-}
-
-function saveProfile(){
-  document.getElementById('successMsg').textContent="Profile Saved Successfully!";
-}
-
-function cancelProfile(){
-  document.getElementById('successMsg').textContent="";
-  skills=[]; experiences=[]; education=[];
-  renderSkills(); renderExperience(); renderEducation();
-  document.getElementById('fullName').value='';
-  document.getElementById('email').value='';
-  document.getElementById('phone').value='';
-  document.getElementById('profilePic').src='https://via.placeholder.com/80';
-  document.getElementById('resumeName').textContent='';
-}
 </script>
+
 </body>
 </html>
